@@ -1,0 +1,10 @@
+flask
+flask_sqlalchemy==3.0.0
+pymysql
+flask_restful
+sqlalchemy
+cryptography
+Werkzeug
+flask_login
+python-dotenv
+gunicorn==20.1.0

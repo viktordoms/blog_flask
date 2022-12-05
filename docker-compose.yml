@@ -1,0 +1,59 @@
+version: "3"
+
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: ./docker/python/Dockerfile
+    container_name: "blog-container"
+    volumes:
+      - .:/application
+      - static_volume:/application/static
+    expose:
+      - 8000
+    env_file:
+      - .env
+    networks:
+      - app
+    depends_on:
+      - db
+
+
+  db:
+    container_name: "database-blog-container"
+    image: mysql:8.0.27
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    volumes:
+      - ./docker/mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=blog_base
+      - MYSQL_USER=viktor
+      - MYSQL_PASSWORD=14051998
+    ports:
+      - "5566:3306"
+    networks:
+      - app
+    security_opt:
+        - seccomp:unconfined
+
+  nginx:
+    build: ./docker/nginx
+    container_name: "flask_nginx"
+    ports:
+      - 1337:80
+    depends_on:
+      - app
+    networks:
+      - app
+    volumes:
+      - .:/application
+      - static_volume:/application/static
+
+networks:
+  app:
+    driver: bridge
+
+volumes:
+  static_volume:

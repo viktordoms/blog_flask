@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Всі пости
+{% endblock %}
+
+{% block menu %}
+<head>
+  <link rel="stylesheet" type="text/css" href="{{ url_for( 'static', filename='/css/base.css', v=1)}}">
+</head>
+<body>
+<section id="">
+<div class="wrapper">
+  <div class="flash_main">
+    <div class="flash_massage">
+    {{ super() }}
+    {% for cat, msg in get_flashed_messages(True) %}
+    <div class="flash {{cat}}">{{msg}}</div>
+    {% endfor %}
+    </div>
+  </div>
+    <form action="/all_post/categor_post" method="get" class="post_top">
+      <form method="get" class="post_top">
+        <select  name="categor" class="categor_post_select" required >
+          <option disabled selected>Виберіть категорію</option>
+          <option value="Про сіськи">Про сіськи</option>
+          <option value="Про піськи">Про піськи</option>
+          <option value="Про шлюх">Про шлюх</option>
+          <option value="Про котиків">Про котиків</option>
+        </select>
+        <button type="submit" id="button_categor_post" class="button_menu">Переглянути пости</button>
+      </form>
+      <div>
+        {% for el in pages.items %}
+        <div id="my_post_block">
+          <p id="topic_my_post">Тема: {{ el.topic}}</p>
+          <p id="categor_my_post">Категорія поста: {{ el. categor}}</p>
+          <a id="detail_my_post" href="/post:{{el.post_id}}">Детальніше</a>
+          <div  class="likes_block">
+          {% if current_user.is_authenticated %}
+            {% if current_user.has_liked_post(el) %}
+                <a class="unlike" href="{{ url_for('like_action', post_id=el.post_id, action='unlike') }}">❤</a>
+            {% else %}
+                <a class="like" href="{{ url_for('like_action', post_id=el.post_id, action='like') }}">❤</a>
+            {% endif %}
+            <a class="info_like">{{ el.likes.count() }}</a>
+          {% else %}
+            <a class="info_like">❤ {{ el.likes.count() }}</a>
+          {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </form>
+    <nav>
+    <div class="pagination">
+
+      <p class="page-item" {% if not pages.has_prev %} disabled {% endif %}>
+        <a class="page-link" href="./?page={{ pages.prev_num }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+      </p>
+
+      {% for page in pages.iter_pages() %}
+
+         <p {% if page == pages.page %} id="page-item-active" {% endif %} class="page-item">
+            <a class="page-link" href="./?page={{ page }}">{{page}}</a>
+         </p>
+
+      {% endfor %}
+
+      <p class="page-item" {% if not pages.has_next %} class="disabled" {% endif %}>
+        <a class="page-link" href="./?page={{ pages.next_num }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+      </p>
+    </div>
+  </nav>
+</div>
+</section>
+</body>
+{% endblock %}

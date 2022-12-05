@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Деталі поста {{detail.topic}}
+{% endblock %}
+
+{% block menu %}
+<head>
+  <link rel="stylesheet" href="/static/css/base.css?v=1">
+</head>
+<body>
+  <div >
+    <div id="my_post_flash" class="flash_massage">
+    {{ super() }}
+    {% for cat, msg in get_flashed_messages(True) %}
+    <div class="flash {{cat}}">{{msg}}</div>
+    {% endfor %}
+    </div>
+  </div>
+  <form action="/post:{{post_id}}" method="get">
+    <div>
+        <div class="post_block_detail">
+          <p id="categor_post_detail">Категорія поста: {{ detail.categor}}</p>
+          <p id="topic_post_detail">Тема: {{ detail.topic}}</p>
+          <p id="text_post_detail">{{ detail.text}}</p>
+          <p id="date_post_detail_main">Дата створення: {{ detail.date_add}}</p>
+          <div id="likes_main_categor" class="likes_block">
+          {% if current_user.is_authenticated %}
+            {% if current_user.has_liked_post(detail) %}
+                <a class="unlike" href="{{ url_for('like_action', post_id=detail.post_id, action='unlike') }}">❤</a>
+            {% else %}
+                <a class="like" href="{{ url_for('like_action', post_id=detail.post_id, action='like') }}">❤</a>
+            {% endif %}
+            <a class="info_like">{{ detail.likes.count() }}</a>
+          {% else %}
+            <a class="info_like">❤ {{ detail.likes.count() }}</a>
+          {% endif %}
+          </div>
+        </div>
+    </div>
+  </form>
+</body>
+{% endblock %}

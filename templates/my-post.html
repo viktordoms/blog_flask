@@ -1,0 +1,45 @@
+{% extends 'head_for_user.html' %}
+
+{% block title %}
+Мої пости
+{% endblock %}
+
+{% block menu %}
+<head>
+  <link rel="stylesheet" href="/static/css/base.css?v=1">
+</head>
+<body>
+  <div >
+    <div id="my_post_flash" class="flash_massage">
+    {{ super() }}
+    {% for cat, msg in get_flashed_messages(True) %}
+    <div class="flash {{cat}}">{{msg}}</div>
+    {% endfor %}
+    </div>
+  </div>
+
+  <form action="/users/my-post" method="get">
+      <div>
+        {% for el in post %}
+        <div id="my_post_block">
+          <p id="topic_my_post">Тема: {{ el.topic}}</p>
+          <p id="categor_my_post">Категорія поста: {{ el. categor}}</p>
+          <a id="detail_my_post" href="/users/my-post/post:{{el.post_id}}">Детальніше</a>
+          <div  class="likes_block">
+          {% if current_user.is_authenticated %}
+            {% if current_user.has_liked_post(el) %}
+                <a class="unlike" href="{{ url_for('like_action', post_id=el.post_id, action='unlike') }}">❤</a>
+            {% else %}
+                <a class="like" href="{{ url_for('like_action', post_id=el.post_id, action='like') }}">❤</a>
+            {% endif %}
+            <a class="info_like">{{ el.likes.count() }}</a>
+          {% else %}
+            <a class="info_like">{{ el.likes.count() }}</a>
+          {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+  </form>
+</body>
+{% endblock %}

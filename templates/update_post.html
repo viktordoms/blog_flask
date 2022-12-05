@@ -1,0 +1,33 @@
+{% extends 'head_for_user.html' %}
+
+{% block title %}
+Редагування поста
+{% endblock %}
+
+{% block menu %}
+<head>
+  <link rel="stylesheet" href="/static/css/base.css?v=1">
+</head>
+<body>
+  <div id="flash_main">
+  <div class="flash_massage">
+  {{ super() }}
+  {% for cat, msg in get_flashed_messages(True) %}
+  <div class="flash {{cat}}">{{msg}}</div>
+  {% endfor %}
+  </div>
+  </div>
+  <form action="/users/my-post/post:{{detail.post_id}}/update" method="post" class="post_block_update">
+  <div>
+    <p id="update_post">Редагування поста</p>
+    <p id="topic_post_detail">Тема:</p>
+    <input type="text"  id="topic_post_update" name="topic" maxlength="50" required  value="{{ detail.topic }}"></input>
+    <p id="text_post_detail">Текст:</p>
+    <textarea  type="text"  id="text_post_update" name="text" required value="{{ detail.text }}">{{ detail.text }}</textarea>
+
+    <input type='submit' class="button_add" value="Зберегти">
+  </div>
+
+  </form>
+</body>
+{% endblock %}

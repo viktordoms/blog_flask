@@ -1,0 +1,36 @@
+{% extends 'head_for_user.html' %}
+
+{% block title %}
+User_id:{{user_id}}
+{% endblock %}
+
+{% block menu %}
+<head>
+  <link rel="stylesheet" href="/static/css/base.css?v=1">
+</head>
+<body>
+  <form action="/users/{{user_id}}" method="get">
+    <div id="You_id">
+      <p>Здарова  {{ name.first_name }}</p>
+    </div>
+  </form>
+  <div>
+    <div id="user_page_flash" class="flash_massage">
+    {{ super() }}
+    {% for cat, msg in get_flashed_messages(True) %}
+    <div class="flash {{cat}}">{{msg}}</div>
+    {% endfor %}
+    </div>
+  </div>
+
+  <div class="button_user_page">
+  <div id="create-post">
+    <a class="button_menu" href="/users/create-post" type='submit' >Новий пост</a>
+  </div>
+  <div id="my_post">
+    <a class="button_menu" href="/users/my-post" type='submit' >Мої пости</a>
+  </div>
+  </div>
+</body>
+{% endblock %}
+<code></code>

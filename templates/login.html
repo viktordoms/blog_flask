@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Авторизація
+{% endblock %}
+
+{% block menu %}
+<head>
+  <link rel="stylesheet" href="/static/css/base.css?v=1">
+</head>
+<body>
+  <form action="/users/exit" method="post" class="form-exit">
+    <p id="text_login">Авторизація користувача</p>
+    <div class="flash_massage">
+      {{ super() }}
+      {% for cat, msg in get_flashed_messages(True) %}
+      <div class="flash {{cat}}">{{msg}}</div>
+      {% endfor %}
+    </div>
+    <div>
+      <p><input type="email" class="form-login" id="email" name="email" required placeholder=" Введіть ваш Email"></p>
+      <p><input type="password" class="form-login" id="password" name="password" required placeholder=" Введіть ваш пароль(більше 8-ми символів)"></p>
+      <p class="remainme"><input type="checkbox" name="remainme" value="">Запам'ятати мене</p>
+      <input type='submit' class="button_add" value="Вхід">
+      <a class="button_exit" href="/users/new" type='submit'>Реєстрація</a>
+    </div>
+  </form>
+</body>
+{% endblock %}
