@@ -8,7 +8,6 @@ services:
     container_name: "blog-container"
     volumes:
       - .:/application
-      - static_volume:/application/static
     expose:
       - 8000
     env_file:
@@ -42,18 +41,14 @@ services:
     build: ./docker/nginx
     container_name: "flask_nginx"
     ports:
-      - 1337:80
+      - 80:80
     depends_on:
       - app
     networks:
       - app
     volumes:
       - .:/application
-      - static_volume:/application/static
 
 networks:
   app:
     driver: bridge
-
-volumes:
-  static_volume:

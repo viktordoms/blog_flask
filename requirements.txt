@@ -1,10 +1,10 @@
-flask
+flask==2.2.2
 flask_sqlalchemy==3.0.0
-pymysql
+pymysql==1.0.2
 flask_restful
-sqlalchemy
+sqlalchemy==1.4.42
 cryptography
-Werkzeug
+Werkzeug==2.2.2
 flask_login
-python-dotenv
+python-dotenv==0.19.2
 gunicorn==20.1.0
